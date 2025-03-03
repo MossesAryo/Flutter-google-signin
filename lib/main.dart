@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_firebase/firebase_options.dart';
+import 'package:new_firebase/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,12 @@ class _SignInScreenState extends State<SignInScreen> {
       setState(() {
         _user = userCredential.user;
       });
+      if (_user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen()),
+        );
+      }
     } catch (e) {
       print("Error signing in with Google: $e");
     }
@@ -70,23 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   onPressed: signInWithGoogle,
                   child: const Text("Sign in with Google"),
                 )
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(_user!.photoURL ?? ''),
-                      radius: 40,
-                    ),
-                    const SizedBox(height: 10),
-                    Text("Name: ${_user!.displayName}"),
-                    Text("Email: ${_user!.email}"),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: signOut,
-                      child: const Text("Sign out"),
-                    ),
-                  ],
-                ),
+                : CircularProgressIndicator(),
       ),
     );
   }
