@@ -31,4 +31,6 @@ class LoginController {
       print("Error signing in with Google: $e");
     }
   }
+  static Future<void> signIn(BuildContext context) async {
+    
 }
