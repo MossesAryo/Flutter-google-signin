@@ -16,8 +16,8 @@ class LoginController {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
 
       User? user = userCredential.user;
 
@@ -31,6 +31,8 @@ class LoginController {
       print("Error signing in with Google: $e");
     }
   }
-  static Future<void> signIn(BuildContext context) async {
-    
+
+  static Future<void> signIn(BuildContext context, String email, String password) async {
+
+  }
 }

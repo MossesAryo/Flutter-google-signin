@@ -67,7 +67,11 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Handle login logic
+                  LoginController.signIn(
+                    context: context,
+                    email: _emailController.text,
+                    password:_passwordController.text,
+                  );
                 },
                 child: const Text("Submit"),
               ),
