@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_firebase/screens/main_screen.dart';
 
-class Login {
-  User? _user;
-  
-
-  Future<void> signInWithGoogle() async {
+class LoginController {
+  static Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
@@ -19,14 +16,12 @@ class Login {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithCredential(credential);
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-      setState(() {
-        _user = userCredential.user;
-      });
+      User? user = userCredential.user;
 
-      if (_user != null) {
+      if (user != null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainScreen()),
