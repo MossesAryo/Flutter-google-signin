@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_firebase/main.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  String name = "";
+  String nis = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    if (user != null) {
+      var userRef = FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid);
+      var docSnapshot = await userRef.get();
+
+      if (docSnapshot.exists) {
+        setState(() {
+          name = docSnapshot.data()?["name"] ?? "No Name";
+          nis = docSnapshot.data()?["nis"] ?? "No NIS";
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Main Screen"),
@@ -35,7 +65,7 @@ class MainScreen extends StatelessWidget {
                 radius: 40,
               ),
               Text(
-                "Hello, ${user.displayName ?? "User"}",
+                "Hello, $name",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -43,7 +73,15 @@ class MainScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                "Email: ${user.email ?? "Not available"}",
+                "NIS: $nis",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Email: ${user?.email ?? "Not available"}",
                 style: const TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,

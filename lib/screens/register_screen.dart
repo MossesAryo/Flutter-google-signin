@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: _nisController,
+                controller: _nameController,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: "Nama",
@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: _nameController,
+                controller: _nisController,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: "NIS",
