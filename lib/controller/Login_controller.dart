@@ -28,11 +28,57 @@ class LoginController {
         );
       }
     } catch (e) {
-      print("Error signing in with Google: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error signing in with Google: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
-  static Future<void> signIn(BuildContext context, String email, String password) async {
+  static Future<void> signIn({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      email = email.trim();
+      password = password.trim();
 
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ), // Mengganti SplashScreen() dengan MainScreen()
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      String message = "Login failed. Please try again.";
+
+      if (e.code == 'user-not-found') {
+        message = "No user found for that email.";
+      } else if (e.code == 'wrong-password') {
+        message = "Wrong password provided.";
+      } else if (e.code == 'invalid-email') {
+        message = "The email address is not valid.";
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

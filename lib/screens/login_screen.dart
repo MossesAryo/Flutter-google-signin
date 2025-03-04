@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_firebase/controller/Login_controller.dart';
+import 'package:new_firebase/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +12,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   LoginController.signIn(
                     context: context,
-                    email: _emailController.text,
-                    password:_passwordController.text,
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim(),
                   );
                 },
                 child: const Text("Submit"),
@@ -78,14 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to registration screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
                 },
                 child: const Text("Register"),
               ),
               const SizedBox(height: 20),
               OutlinedButton.icon(
-                onPressed:
-                    () async => await LoginController.signInWithGoogle(context),
+                onPressed: () async {
+                  await LoginController.signInWithGoogle(context);
+                },
                 icon: Image.network(
                   'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
                   height: 24,
