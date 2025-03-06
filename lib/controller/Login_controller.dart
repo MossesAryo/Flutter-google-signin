@@ -110,11 +110,21 @@ class LoginController {
             children: [
               TextField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: "Nama Lengkap"),
+                decoration: InputDecoration(
+                  labelText: "Nama Lengkap",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
               TextField(
                 controller: nisController,
-                decoration: InputDecoration(labelText: "NIS"),
+                decoration: InputDecoration(
+                  labelText: "NIS",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 keyboardType: TextInputType.number,
               ),
             ],
